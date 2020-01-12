@@ -11,9 +11,8 @@ except NameError: pass
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="credentials.json"
 client = vision.ImageAnnotatorClient()
 
-path = 'images\IMG-1626.JPG'
+path = 'IMG-1626.JPG'
 
-audio_file_name = ""
 
 def PictureToText():
 
@@ -59,10 +58,10 @@ class TextToSpeech(object):
         string1 = myText.read()
         myText.close()
 
-        string1 = string1.replace(".\n", ". ZZZZ")
-        string1 = string1.replace("\n", " ")
-        string1 = string1.replace(". ZZZZ", ".\n")
-        string1 = string1.decode('utf-8')
+        string1 = string1.replace(".\\n", ". ZZZZ")
+        string1 = string1.replace("\\n", " ")
+        string1 = string1.replace(". ZZZZ", ".\\n")
+#        string1 = string1.decode('utf-8')
 
         self.tts = string1
         self.timestr = time.strftime("%Y%m%d-%H%M")
@@ -108,6 +107,7 @@ class TextToSpeech(object):
         if response.status_code == 200:
             with open('sample-' + self.timestr + '.wav', 'wb') as audio:
                 audio.write(response.content)
+                global audio_file_name
                 audio_file_name = 'sample-' + self.timestr + '.wav'
                 print("\nStatus code: " + str(response.status_code) + "\nYour TTS is ready for playback.\n")
         else:
@@ -129,14 +129,10 @@ class TextToSpeech(object):
 
 
 def playAudioFile():
-    import simpleaudio as sa
 
-    wave_obj = sa.WaveObject.from_wave_file(audio_file_name)
-    print("Playing audio file\n")
-    play_obj = wave_obj.play()
-    play_obj.wait_done()
-    print("Playing finished")
-
+    print("Going to start playing file " + audio_file_name)
+    os.system('aplay ' + audio_file_name)
+    print("Done playing")
 
 if __name__ == "__main__":
     PictureToText()
