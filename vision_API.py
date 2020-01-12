@@ -8,10 +8,10 @@ try: input = raw_input
 except NameError: pass
 
 # Authenticating the code of google vision API with credentials
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="credentials.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/pi/main/credentials.json"
 client = vision.ImageAnnotatorClient()
 
-path = 'IMG-1626.JPG'
+path = '/home/pi/main/images/image.jpg'
 
 
 def PictureToText():
@@ -22,7 +22,7 @@ def PictureToText():
     image = vision.types.Image(content=content)
     response = client.document_text_detection(image=image)
     document = response.full_text_annotation
-    output_file = open("vision_output.txt","w")
+    output_file = open("/home/pi/main/vision_output.txt","w")
 
     document_text = str(document.text.encode(encoding='UTF-8'))
 
@@ -54,7 +54,7 @@ class TextToSpeech(object):
     def __init__(self, subscription_key):
         self.subscription_key = subscription_key
         #self.tts = input("What would you like to convert to speech: ")
-        myText = open("./vision_output.txt", "r")
+        myText = open("/home/pi/main/vision_output.txt", "r")
         string1 = myText.read()
         myText.close()
 
@@ -62,6 +62,8 @@ class TextToSpeech(object):
         string1 = string1.replace("\\n", " ")
         string1 = string1.replace(". ZZZZ", ".\\n")
 #        string1 = string1.decode('utf-8')
+        string1 = string1.replace("\\x", " ")
+        print("First few lines of text to be played: " + string1[:150])#int(len(string1)/10)])
 
         self.tts = string1
         self.timestr = time.strftime("%Y%m%d-%H%M")
@@ -105,10 +107,10 @@ class TextToSpeech(object):
         includes the date.
         '''
         if response.status_code == 200:
-            with open('sample-' + self.timestr + '.wav', 'wb') as audio:
+            with open('/home/pi/main/sample-' + self.timestr + '.wav', 'wb') as audio:
                 audio.write(response.content)
                 global audio_file_name
-                audio_file_name = 'sample-' + self.timestr + '.wav'
+                audio_file_name = '/home/pi/main/sample-' + self.timestr + '.wav'
                 print("\nStatus code: " + str(response.status_code) + "\nYour TTS is ready for playback.\n")
         else:
             print("\nStatus code: " + str(response.status_code) + "\nSomething went wrong. Check your subscription key and headers.\n")
