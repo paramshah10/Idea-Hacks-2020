@@ -13,6 +13,8 @@ client = vision.ImageAnnotatorClient()
 
 path = 'images\IMG-1626.JPG'
 
+audio_file_name = ""
+
 def PictureToText():
 
     with io.open(path, 'rb') as image_file:
@@ -42,7 +44,7 @@ For example:
 '''
 subscription_key = "cb0355acc1b445b1987ad40abe95ba07"
 
-
+#DON'T DELETE THIS CODE - USEFUL WHEN SET ENVIRONMENT VARIABLE RATHER THAN HARDCODING
 ##if 'SPEECH_SERVICE_KEY' in os.environ:
 ##    subscription_key = os.environ['SPEECH_SERVICE_KEY']
 ##else:
@@ -60,6 +62,7 @@ class TextToSpeech(object):
         string1 = string1.replace(".\n", ". ZZZZ")
         string1 = string1.replace("\n", " ")
         string1 = string1.replace(". ZZZZ", ".\n")
+        string1 = string1.decode('utf-8')
 
         self.tts = string1
         self.timestr = time.strftime("%Y%m%d-%H%M")
@@ -95,6 +98,7 @@ class TextToSpeech(object):
         voice.text = self.tts
         body = ElementTree.tostring(xml_body)
 
+
         response = requests.post(constructed_url, headers=headers, data=body)
         '''
         If a success response is returned, then the binary audio is written
@@ -121,6 +125,14 @@ class TextToSpeech(object):
             print("\nAvailable voices: \n" + response.text)
         else:
             print("\nStatus code: " + str(response.status_code) + "\nSomething went wrong. Check your subscription key and headers.\n")
+
+
+def playAudioFile():
+    from playsound import playsound
+
+    playsound('')
+
+
 
 if __name__ == "__main__":
     PictureToText()
