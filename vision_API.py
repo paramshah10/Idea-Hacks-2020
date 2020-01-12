@@ -108,6 +108,7 @@ class TextToSpeech(object):
         if response.status_code == 200:
             with open('sample-' + self.timestr + '.wav', 'wb') as audio:
                 audio.write(response.content)
+                audio_file_name = 'sample-' + self.timestr + '.wav'
                 print("\nStatus code: " + str(response.status_code) + "\nYour TTS is ready for playback.\n")
         else:
             print("\nStatus code: " + str(response.status_code) + "\nSomething went wrong. Check your subscription key and headers.\n")
@@ -128,10 +129,13 @@ class TextToSpeech(object):
 
 
 def playAudioFile():
-    from playsound import playsound
+    import simpleaudio as sa
 
-    playsound('')
-
+    wave_obj = sa.WaveObject.from_wave_file(audio_file_name)
+    print("Playing audio file\n")
+    play_obj = wave_obj.play()
+    play_obj.wait_done()
+    print("Playing finished")
 
 
 if __name__ == "__main__":
@@ -139,5 +143,6 @@ if __name__ == "__main__":
     app = TextToSpeech(subscription_key)
     app.get_token()
     app.save_audio()
+    playAudioFile()
     # Get a list of voices https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#get-a-list-of-voices
     # app.get_voices_list()
