@@ -44,11 +44,11 @@ For example:
 subscription_key = "cb0355acc1b445b1987ad40abe95ba07"
 
 #DON'T DELETE THIS CODE - USEFUL WHEN SET ENVIRONMENT VARIABLE RATHER THAN HARDCODING
-##if 'SPEECH_SERVICE_KEY' in os.environ:
-##    subscription_key = os.environ['SPEECH_SERVICE_KEY']
-##else:
-##    print('Environment variable for your subscription key is not set.')
-##    exit()
+#if 'SPEECH_SERVICE_KEY' in os.environ:
+#    subscription_key = os.environ['SPEECH_SERVICE_KEY']
+#else:
+#    print('Environment variable for your subscription key is not set.')
+#    exit()
 
 class TextToSpeech(object):
     def __init__(self, subscription_key):
@@ -63,7 +63,7 @@ class TextToSpeech(object):
         string1 = string1.replace(". ZZZZ", ".\\n")
 #        string1 = string1.decode('utf-8')
         string1 = string1.replace("\\x", " ")
-        print("First few lines of text to be played: " + string1[:150])#int(len(string1)/10)])
+#        print("First few lines of text to be played: " + string1[:150])#int(len(string1)/10)])
 
         self.tts = string1
         self.timestr = time.strftime("%Y%m%d-%H%M")
@@ -107,10 +107,10 @@ class TextToSpeech(object):
         includes the date.
         '''
         if response.status_code == 200:
-            with open('/home/pi/main/sample-' + self.timestr + '.wav', 'wb') as audio:
+            with open('/home/pi/main/audio_files/sample-' + self.timestr + '.wav', 'wb') as audio:
                 audio.write(response.content)
                 global audio_file_name
-                audio_file_name = '/home/pi/main/sample-' + self.timestr + '.wav'
+                audio_file_name = '/home/pi/main/audio_files/sample-' + self.timestr + '.wav'
                 print("\nStatus code: " + str(response.status_code) + "\nYour TTS is ready for playback.\n")
         else:
             print("\nStatus code: " + str(response.status_code) + "\nSomething went wrong. Check your subscription key and headers.\n")

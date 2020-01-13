@@ -86,11 +86,26 @@ def setup():
 setup()
 while True:
 
+    x = int(input("Enter virtual button number: "))
+
+    if x == 1:
+        button1_pressed(31)
+    elif x == 2:
+        button2_pressed(33)
+    elif x == 3:
+        button3_pressed(35)
+    elif x == 4:
+        button4_pressed(37)
+
     if GPIO.event_detected(37):
         processes = os.popen('ps -ax | grep vision_API.py').read()
 
-        i = 1
+        i = 0
         process_id = ""
+
+        while(processes[i] == ' '):
+            i += 1
+
         while(processes[i].isdigit()):
             process_id += processes[i]
             i += 1
