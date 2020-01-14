@@ -8,7 +8,7 @@ try: input = raw_input
 except NameError: pass
 
 # Authenticating the code of google vision API with credentials
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/pi/main/credentials.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/pi/main/credentials/google_credentials.json"
 client = vision.ImageAnnotatorClient()
 
 path = '/home/pi/main/images/image.jpg'
@@ -41,7 +41,10 @@ variables to secure your subscription keys. The environment variable is
 set to SPEECH_SERVICE_KEY in our sample.
 For example:
 '''
-subscription_key = "cb0355acc1b445b1987ad40abe95ba07"
+
+t = open("/home/pi/main/credentials/microsoft_credentials.txt")
+key = t.read()
+subscription_key = key
 
 #DON'T DELETE THIS CODE - USEFUL WHEN SET ENVIRONMENT VARIABLE RATHER THAN HARDCODING
 #if 'SPEECH_SERVICE_KEY' in os.environ:
